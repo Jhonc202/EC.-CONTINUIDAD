@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guía de estudio: Ecuación de Continuidad</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#eaf1f2;--card:#fff;--ink:#12303a;--mut:#5b7480;--line:#c9d9dd;--acc:#0b6f84;--acc2:#b8560f;--ok:#1b7a43;--bad:#b3261e;--soft:#dcebee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1f26;--card:#14303a;--ink:#e3f0f2;--mut:#9ab5bd;--line:#2a4a56;--acc:#4cc3da;--acc2:#f0a15f;--ok:#6fd39a;--bad:#ff8a80;--soft:#1b3d49}}
+:root[data-theme="dark"]{--bg:#0d1f26;--card:#14303a;--ink:#e3f0f2;--mut:#9ab5bd;--line:#2a4a56;--acc:#4cc3da;--acc2:#f0a15f;--ok:#6fd39a;--bad:#ff8a80;--soft:#1b3d49}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+header{background:var(--acc);color:#fff;padding:22px 16px 18px}
+header .in,main{max-width:920px;margin:0 auto}
+header p{margin:0;font-size:15px;opacity:.92}
+header .name{font-weight:600;font-size:17px;margin-bottom:4px}
+h1{font:700 clamp(24px,5vw,34px)/1.15 "Source Serif 4",Georgia,serif;margin:6px 0 4px}
+main{padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+h2{font:700 21px "Source Serif 4",Georgia,serif;margin:0 0 10px}
+h3{font-size:16px;margin:14px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
+.row{display:flex;gap:6px}
+input,select,button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:7px;padding:8px 9px;min-width:0}
+input{flex:1;width:100%}
+button{cursor:pointer;font-weight:600}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
+:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.seg button{border-radius:0}.seg button:first-child{border-radius:7px 0 0 7px}.seg button:last-child{border-radius:0 7px 7px 0}
+.seg button[aria-pressed=true]{background:var(--acc);color:#fff}
+.eq{background:var(--soft);border-radius:7px;padding:8px 10px;margin:6px 0;overflow-x:auto;font-family:"Source Serif 4",Georgia,serif;font-size:17px;white-space:nowrap}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.res div{border:1px solid var(--line);border-radius:8px;padding:10px}
+.res b{display:block;font:700 20px "Source Serif 4",Georgia,serif;overflow-wrap:anywhere}
+.res span{font-size:13px;color:var(--mut)}
+.note{border-left:4px solid var(--acc2);padding:6px 10px;background:var(--soft);border-radius:0 7px 7px 0;margin:10px 0;font-size:15px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+.wrap{overflow-x:auto}
+.fb{font-size:14px;margin-top:3px;min-height:20px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+svg{width:100%;max-width:340px;height:auto;display:block;margin:8px auto}
+</style>
+</head>
+<body>
+<header><div class="in">
+<p class="name">Ing. Jhon Camacho Azan, Mgs</p>
+<h1>Ecuación de continuidad: la jeringa</h1>
+<p>Diseño Hidráulico · Agropecuaria · Tercer ciclo · Guía de estudio</p>
+</div></header>
+<main>
+<section aria-labelledby="t1">
+<h2 id="t1">El problema</h2>
+<p>Una jeringa está llena de un fluido no viscoso. El líquido sale por la aguja con un caudal dado. Con el diámetro de la aguja y el de la jeringa dados en la tabla, <b>¿con qué velocidad se mueve el émbolo dentro de la jeringa?</b></p>
+<div class="note">El caudal es el mismo en la jeringa y en la aguja (fluido incompresible): Q = A₁·v₁ = A₂·v₂. Ojo: el caudal de la hoja dice "g/cm³", pero es un error de rotulado; las fórmulas lo tratan como <b>cm³/s</b>.</div>
+<h3>Tus datos</h3>
+<div class="grid" id="inp"></div>
+<div class="bar"><button class="p" id="calc" type="button">Resolver paso a paso</button><button id="rand" type="button">Ejercicio aleatorio</button><button id="ex" type="button">Ejemplo del Excel</button></div>
+</section>
+<section id="sol" aria-live="polite" hidden><h2>Solución</h2><div id="steps"></div><div class="res" id="res"></div></section>
+<section aria-labelledby="t3">
+<h2 id="t3">Ponte a prueba</h2>
+<p>Resuelve en tu cuaderno con los datos de arriba y escribe tus resultados en las unidades indicadas. Se acepta un error de 1 %.</p>
+<div class="grid" id="quiz"></div>
+<div class="bar"><button class="p" id="chk" type="button">Comprobar</button><b id="score"></b></div>
+<p style="font-size:14px;color:var(--mut)">La hoja solo indica una calificación total manual sobre 10. Este puntaje es orientativo: D₂ (2), A₁ (3) y v₁ (5). El docente puede ajustarlo.</p>
+</section>
+<section aria-labelledby="t4">
+<h2 id="t4">Ideas clave y errores frecuentes</h2>
+<div class="wrap"><table>
+<tr><th>Concepto</th><th>Fórmula</th></tr>
+<tr><td>Caudal</td><td>Q = A · v (volumen por unidad de tiempo)</td></tr>
+<tr><td>Ecuación de continuidad</td><td>Q₁ = Q₂, es decir A₁·v₁ = A₂·v₂</td></tr>
+<tr><td>Área circular</td><td>A = π · (D/2)²</td></tr>
+<tr><td>Velocidad del émbolo</td><td>v₁ = Q / A₁</td></tr>
+<tr><td>Relación de velocidades</td><td>v₂ / v₁ = (D₁ / D₂)²</td></tr>
+<tr><td>Equivalencias</td><td>1 cm = 10 mm · 1 L = 1000 cm³ · 1 m = 100 cm</td></tr>
+</table></div>
+<ul>
+<li>Dividir el diámetro entre 2 antes de elevar al cuadrado: el error más común.</li>
+<li>El diámetro de la aguja viene en <b>mm</b> y el de la jeringa en <b>cm</b>. Conviértelos a la misma unidad.</li>
+<li>Para hallar la velocidad del émbolo solo se necesita el caudal y el diámetro de la jeringa. El diámetro de la aguja sirve para la velocidad de salida v₂.</li>
+<li>El émbolo se mueve muy despacio y el líquido sale muy rápido: a menor área, mayor velocidad.</li>
+</ul>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const UQ=[['cm³/s',1],['mL/s',1],['L/s',1000],['L/min',1000/60],['m³/s',1e6]],UA=[['mm',.1],['cm',1],['in',2.54],['m',100]],UB=[['cm',1],['mm',.1],['in',2.54],['m',100]];
+const F=[['q','Caudal (aguja)',UQ],['d2','Diámetro 2 (aguja)',UA],['d1','Diámetro 1 (jeringa)',UB]];
+$('inp').innerHTML=F.map(f=>`<div><label for="${f[0]}">${f[1]}</label><div class="row"><input id="${f[0]}" type="number" step="any" min="0"><select id="${f[0]}u" aria-label="Unidad ${f[1]}">${f[2].map((u,i)=>`<option value="${u[1]}"${i==0?' selected':''}>${u[0]}</option>`).join('')}</select></div></div>`).join('');
+const fmt=(x,d=6)=>Number(x).toLocaleString('es-EC',{maximumSignificantDigits:d});
+let cur=null;
+function setVals(a){F.forEach((f,i)=>{$(f[0]).value=a[i];$(f[0]+'u').selectedIndex=0});solve()}
+$('ex').onclick=()=>setVals([71.7,2,4.8]);
+$('rand').onclick=()=>{const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;setVals([R(300,800)/10,R(3,20)/10,R(5,50)/10])};
+$('calc').onclick=solve;
+function calc(){
+ const x={};for(const f of F){const v=parseFloat($(f[0]).value);if(!(v>0))return null;x[f[0]]=v*(+$(f[0]+'u').value)}
+ const A1=Math.PI*(x.d1/2)**2,A2=Math.PI*(x.d2/2)**2,v1=x.q/A1,v2=x.q/A2;
+ return {...x,A1,A2,v1,v2};
+}
+function solve(){const c=calc();if(!c){alert('Completa las tres casillas con valores mayores que cero.');return}cur=c;$('sol').hidden=false;render()}
+function render(){
+ const c=cur,s=(t,eq,v)=>`<h3>${t}</h3><div class="eq">${eq}</div>${v?`<p>${v}</p>`:''}`;
+ $('steps').innerHTML=
+ s('0. Convertir a cm y cm³/s',`Q = ${fmt(c.q)} cm³/s`,`D₂ = <b>${fmt(c.d2)} cm</b> · D₁ = <b>${fmt(c.d1)} cm</b>`)+
+ s('1. Área de la jeringa',`A₁ = π · (D₁/2)² = π · (${fmt(c.d1)}/2)² = ${fmt(c.A1)} cm²`)+
+ s('2. Ecuación de continuidad',`Q = A₁ · v₁  →  v₁ = Q / A₁`)+
+ s('3. Velocidad del émbolo',`v₁ = ${fmt(c.q)} / ${fmt(c.A1)} = ${fmt(c.v1)} cm/s`,`<b>v₁ = ${fmt(c.v1)} cm/s</b> (${fmt(c.v1/100)} m/s)`)+
+ s('4. Comprobación: velocidad en la aguja',`A₂ = π · (${fmt(c.d2)}/2)² = ${fmt(c.A2)} cm²  →  v₂ = Q / A₂ = ${fmt(c.v2)} cm/s`,`Salida ${fmt(c.v2/c.v1,4)} veces más rápida que el émbolo, igual a (D₁/D₂)².`);
+ $('res').innerHTML=[['Caudal',fmt(c.q,5)+' cm³/s'],['D₂ (aguja)',fmt(c.d2,5)+' cm'],['D₁ (jeringa)',fmt(c.d1,5)+' cm'],['Área 1',fmt(c.A1,5)+' cm²'],['Velocidad 1 (émbolo)',fmt(c.v1,5)+' cm/s'],['Velocidad 2 (aguja)',fmt(c.v2,5)+' cm/s']].map(x=>`<div><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+}
+const Q=[['D₂ (cm)','d2',2],['A₁ (cm²)','A1',3],['v₁ (cm/s)','v1',5]];
+$('quiz').innerHTML=Q.map(q=>`<div><label for="q${q[1]}">${q[0]}</label><input id="q${q[1]}" type="number" step="any"><div class="fb" id="f${q[1]}"></div></div>`).join('');
+$('chk').onclick=()=>{
+ const c=cur||calc();if(!c){alert('Primero ingresa los datos y pulsa "Resolver paso a paso".');return}cur=c;let tot=0;
+ for(const q of Q){const k=q[1],v=parseFloat($('q'+k).value),f=$('f'+k),r=c[k];
+  if(isNaN(v)){f.className='fb bad';f.textContent='Falta tu respuesta.';continue}
+  if(Math.abs(v-r)<=Math.abs(r)*.01){tot+=q[2];f.className='fb ok';f.textContent='Correcto: '+fmt(r,5)}
+  else{f.className='fb bad';f.textContent='Revisa unidades y conversiones. Esperado: '+fmt(r,5)}}
+ $('score').textContent='Puntaje automático: '+tot.toFixed(1)+' / 10';
+};
+</script>
+</body>
+</html>
